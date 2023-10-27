@@ -51,7 +51,7 @@ class Assets(_database.Base):
 
 class Devices(_database.Base):
     __tablename__ = "devices"
-    deviceID = _sql.Column(_sql.Integer, primary_key=True, index=True)
+    deviceID = _sql.Column(_sql.Integer, unique=True, primary_key=True, index=True)
     whID = _sql.Column(_sql.Integer, _sql.ForeignKey("wares.whID"), index=True)
     tripID = _sql.Column(_sql.Integer, _sql.ForeignKey("trips.tripID"), index=True)
     deviceName = _sql.Column(_sql.String)
@@ -59,8 +59,8 @@ class Devices(_database.Base):
 
 class Sensors(_database.Base):
     __tablename__ = "sensors"
-    entryID = _sql.Column(_sql.Integer, unique=True, primary_key=True, index=True)
-    # timestamp = _sql.Column(_sql.Time)
+    entryID = _sql.Column(_sql.Integer, primary_key=True)
+    timestamp = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow, primary_key=True)
     deviceID = _sql.Column(_sql.Integer, _sql.ForeignKey("devices.deviceID"))
     temperature = _sql.Column(_sql.Float)
     humidity = _sql.Column(_sql.Float)
@@ -77,3 +77,4 @@ class Alarms(_database.Base):
     deviceID = _sql.Column(_sql.Integer, _sql.ForeignKey("devices.deviceID"),  index=True)
     entryID = _sql.Column(_sql.Integer, _sql.ForeignKey("sensors.entryID"),  index=True)
     desc = _sql.Column(_sql.String)
+    timestamp = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow, primary_key=True)

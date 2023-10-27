@@ -39,7 +39,6 @@ class _TripsBase(_pyd.BaseModel):
     srcLoc: str
     destLoc: str
     dest: str
-    # deviceID: int
     tripID: int
     driverID: int
 
@@ -63,7 +62,6 @@ class _WhBase(_pyd.BaseModel):
     whLoc: str
     whID: int
     ownerID: int
-    # deviceID: int
 
 class WareCreate(_WhBase):
     pass
@@ -128,7 +126,7 @@ class _SensorBase(_pyd.BaseModel):
     latitude: str
     longitude: str
     entryID: int
-    # timestamp: _dt.datetime
+    timestamp: _dt.datetime
     deviceID: int
 
 class SensorCreate(_SensorBase):
@@ -149,6 +147,7 @@ class _AlarmBase(_pyd.BaseModel):
     deviceID: int
     entryID: int
     alarmID: int
+    timestamp : _dt.datetime
 
 class AlarmCreate(_AlarmBase):
     pass
