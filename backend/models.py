@@ -3,7 +3,6 @@ import sqlalchemy as _sql
 import passlib.hash as _hash
 import database as _database
 
-
 class Users(_database.Base):
     __tablename__ = "users"
     uid = _sql.Column(_sql.Integer, primary_key=True, index=True)
@@ -14,7 +13,6 @@ class Users(_database.Base):
     def verify_password(self, password: str):
         return _hash.bcrypt.verify(password, self.hashed_password)
     
-
 class Trips(_database.Base):
     __tablename__ = "trips"
     tripID = _sql.Column(_sql.String, unique=True, primary_key=True, index=True)

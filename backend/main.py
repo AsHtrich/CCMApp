@@ -138,3 +138,8 @@ async def delete_entry(entry_id: int, db: _orm.Session = _fastapi.Depends(_servi
 async def delete_alarm(alarm_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.delete_item(item_id=alarm_id, db=db, item_model=_models.Alarms,item_id_attr=_models.Alarms.alarmID)
 
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@app.get("/api")
+async def root():
+    return {"message": "Awesome Application"}
