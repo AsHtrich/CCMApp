@@ -142,4 +142,4 @@ async def delete_alarm(alarm_id: int, db: _orm.Session = _fastapi.Depends(_servi
 
 @app.get("/api")
 async def root():
-    return {"message": "Awesome Application"}
+    return {"message": "Awesome CCM Application"}
