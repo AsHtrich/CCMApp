@@ -5,6 +5,8 @@ import sqlalchemy.orm as _orm
 import passlib.hash as _hash
 import database as _database, models as _models, schemas as _schemas
 import jwt as _jwt
+import thingspeak
+import json
 
 oauth2schema = _security.OAuth2PasswordBearer(tokenUrl="/api/token")
 JWT_SECRET = "myjwtsecret"
@@ -156,31 +158,6 @@ async def create_assets(trip: _schemas.Trips, ware: _schemas.Warehouses, asset: 
     return asset_obj
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async def create_sensors(device: _schemas.Devices, sens: _schemas.Sensors, user: _schemas.User, db: _orm.Session):
-    # existing_entry = db.query(_models.Sensors).filter(_models.Sensors.entryID == sens.entryID).first()
-    # if existing_entry:
-    #     raise _fastapi.HTTPException(status_code=400, detail="Duplicate entryID")
-    
-    # sensor_obj = db.query(_models.Sensors).filter((_models.Sensors.entryID == sens.entryID) & (_models.Sensors.timestamp == sens.timestamp)).first()
-    # if not sensor_obj :
-    #     raise _fastapi.HTTPException(status_code=400, detail="Invalid entryID or deviceID")
-    
-    sensor_obj = db.query(_models.Sensors).filter(
-    (_models.Sensors.entryID == sens.entryID) & (_models.Sensors.timestamp == sens.timestamp)).first()
-    if sensor_obj is not None:
-        raise _fastapi.HTTPException(status_code=400, detail="Entry with the same timestamp and entryID already exists")
-
-    device_obj = db.query(_models.Devices).filter(_models.Devices.deviceID == device.deviceID).first() 
-    if not device_obj:
-        raise _fastapi.HTTPException(status_code=400, detail="Invalid deviceID")
-    
-    sens_obj = _models.Sensors(entryID=sens.entryID, temperature=sens.temperature, pressure=sens.pressure, humidity=sens.humidity, light=sens.light, shock=sens.shock, latitude=sens.latitude, longitude=sens.longitude, deviceID=sens.deviceID, timestamp=sens.timestamp)
-    db.add(sens_obj)
-    db.commit()
-    db.refresh(sens_obj)
-    return sens_obj
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------
-
 async def create_alarms(alarm: _schemas.Alarms, sens: _schemas.Sensors, device:_schemas.Devices, user: _schemas.User, db: _orm.Session):
     
     existing_alarm = db.query(_models.Alarms).filter(_models.Alarms.alarmID == alarm.alarmID).first()
@@ -230,3 +207,79 @@ async def delete_item(item_id, db, item_model, item_id_attr):
     db.delete(item)
     db.commit()
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# async def create_sensors(device: _schemas.Devices, sens: _schemas.Sensors, user: _schemas.User, db: _orm.Session):
+#     # existing_entry = db.query(_models.Sensors).filter(_models.Sensors.entryID == sens.entryID).first()
+#     # if existing_entry:
+#     #     raise _fastapi.HTTPException(status_code=400, detail="Duplicate entryID")
+    
+#     # sensor_obj = db.query(_models.Sensors).filter((_models.Sensors.entryID == sens.entryID) & (_models.Sensors.timestamp == sens.timestamp)).first()
+#     # if not sensor_obj :
+#     #     raise _fastapi.HTTPException(status_code=400, detail="Invalid entryID or deviceID")
+    
+#     sensor_obj = db.query(_models.Sensors).filter(
+#     (_models.Sensors.entryID == sens.entryID) & (_models.Sensors.timestamp == sens.timestamp)).first()
+#     if sensor_obj is not None:
+#         raise _fastapi.HTTPException(status_code=400, detail="Entry with the same timestamp and entryID already exists")
+
+#     device_obj = db.query(_models.Devices).filter(_models.Devices.deviceID == device.deviceID).first() 
+#     if not device_obj:
+#         raise _fastapi.HTTPException(status_code=400, detail="Invalid deviceID")
+    
+#     sens_obj = _models.Sensors(entryID=sens.entryID, temperature=sens.temperature, pressure=sens.pressure, humidity=sens.humidity, light=sens.light, shock=sens.shock, latitude=sens.latitude, longitude=sens.longitude, deviceID=sens.deviceID, timestamp=sens.timestamp)
+#     db.add(sens_obj)
+#     db.commit()
+#     db.refresh(sens_obj)
+#     return sens_obj
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device: _schemas.Devices, sens: _schemas.Sensors ):
+    # Connect to ThingSpeak
+    channel = thingspeak.Channel(id=channel_id, api_key=read_api_key)
+
+    # Retrieve data from ThingSpeak
+    data = channel.get()
+
+    # Parse the JSON response
+    parsed_data = json.loads(data)
+
+    # Extract the feeds
+    feeds = parsed_data['feeds']
+
+    for senso in feeds:
+        entry_id = int(senso['entry_id'])
+        timestamp = senso['created_at']
+        temperature = float(senso['field1'])
+        # humidity = float(sens['field2'])
+        # pressure = float(sens['field3'])
+        # light = float(sens['field4'])
+        # shock = float(sens['field5'])
+        # latitude = float(sens['field6'])
+        # longitude = float(sens['field7'])
+
+        # Check if the data already exists in the database (based on entryID and timestamp)
+        sensor_obj = db.query(_models.Sensors).filter(
+            (_models.Sensors.entryID == entry_id) & (_models.Sensors.timestamp == timestamp)
+        ).first()
+
+        if sensor_obj is None:
+            sens_obj = _models.Sensors(
+                entryID=entry_id,
+                timestamp=timestamp,
+                temperature=temperature,
+            )
+
+            db.add(sens_obj)
+
+    sens_obj = _models.Sensors(
+                pressure=sens.pressure,
+                humidity=sens.humidity,
+                light=sens.light,
+                shock=sens.shock,
+                latitude=sens.latitude,
+                longitude=sens.longitude
+            )
+    db.add(sens_obj)
+    db.commit()
+    db.refresh(sens_obj)
+    return sens_obj

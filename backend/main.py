@@ -7,6 +7,9 @@ import services as _services, schemas as _schemas, models as _models
 
 app = _fastapi.FastAPI()
 
+channel_id = "2309020"
+read_api_key = "https://api.thingspeak.com/channels/2309020/feeds.json?results=1"
+
 @app.post("/api/users")
 async def create_user(user: _schemas.UserCreate, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     db_user = await _services.get_user_by_email(user.email, db)
@@ -68,9 +71,9 @@ async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_all_items(db, _models.Assets)
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-@app.post("/api/sensors", response_model=_schemas.Sensors)
-async def create_sensors( device: _schemas.Devices, sens: _schemas.Sensors, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return await _services.create_sensors(user=user, db=db, device=device, sens=sens)
+# @app.post("/api/sensors", response_model=_schemas.Sensors)
+# async def create_sensors( device: _schemas.Devices, sens: _schemas.Sensors, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
+#     return await _services.create_sensors(user=user, db=db, device=device, sens=sens)
 
 @app.get("/api/sensors", response_model=List[_schemas.Sensors])
 async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
@@ -143,3 +146,7 @@ async def delete_alarm(alarm_id: int, db: _orm.Session = _fastapi.Depends(_servi
 @app.get("/api")
 async def root():
     return {"message": "Awesome CCM Application"}
+
+@app.post("/api/sensors", response_model=_schemas.Sensors)
+async def create_sensors(device: _schemas.Devices, sens: _schemas.Sensors, db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return _services.create_sensors(channel_id=channel_id, read_api_key=read_api_key, db=db, device=device, sens=sens)
