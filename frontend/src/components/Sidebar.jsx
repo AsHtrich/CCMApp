@@ -65,9 +65,10 @@ const Sidebar = ({children}) => {
                        </NavLink>
                    ))
                }
+               <Lilo></Lilo>
            </div>
            <main>{children}</main>
-           <Lilo></Lilo>
+           
         </div>
         
     );

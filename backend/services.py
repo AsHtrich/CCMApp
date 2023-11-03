@@ -242,20 +242,24 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
 
     # Parse the JSON response
     parsed_data = json.loads(data)
-
+    
     # Extract the feeds
     feeds = parsed_data['feeds']
+    
 
     for senso in feeds:
+        print(senso)
         entry_id = int(senso['entry_id'])
-        timestamp = senso['created_at']
+        timestamp = _dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%SZ")
         temperature = float(senso['field1'])
-        # humidity = float(sens['field2'])
-        # pressure = float(sens['field3'])
-        # light = float(sens['field4'])
-        # shock = float(sens['field5'])
-        # latitude = float(sens['field6'])
-        # longitude = float(sens['field7'])
+        print(senso['field2'])
+        humidity = senso['field2']
+        pressure = senso['field3']
+        light = 100
+        shock = 100
+        latitude = 100
+        longitude = 100
+        deviceID = device.deviceID
 
         # Check if the data already exists in the database (based on entryID and timestamp)
         sensor_obj = db.query(_models.Sensors).filter(
@@ -267,19 +271,16 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
                 entryID=entry_id,
                 timestamp=timestamp,
                 temperature=temperature,
+                pressure=pressure,
+                humidity=humidity,
+                light=light,
+                shock=shock,
+                latitude=latitude,
+                longitude=longitude,
+                deviceID= deviceID
             )
-
             db.add(sens_obj)
-
-    sens_obj = _models.Sensors(
-                pressure=sens.pressure,
-                humidity=sens.humidity,
-                light=sens.light,
-                shock=sens.shock,
-                latitude=sens.latitude,
-                longitude=sens.longitude
-            )
-    db.add(sens_obj)
+    
     db.commit()
     db.refresh(sens_obj)
     return sens_obj

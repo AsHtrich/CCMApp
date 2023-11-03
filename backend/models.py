@@ -19,7 +19,6 @@ class Trips(_database.Base):
     uid = _sql.Column(_sql.Integer, _sql.ForeignKey("users.uid"), index=True)
     driverID = _sql.Column(_sql.Integer, unique=True, index=True)
     driverNO = _sql.Column(_sql.String, unique=True, index=True)
-    # deviceID = _sql.Column(_sql.Integer, _sql.ForeignKey("devices.deviceID"), unique=True, index=True)
     srcLoc = _sql.Column(_sql.String)
     src = _sql.Column(_sql.String)
     destLoc = _sql.Column(_sql.String)
@@ -35,7 +34,6 @@ class Warehouses(_database.Base):
     uid = _sql.Column(_sql.Integer, _sql.ForeignKey("users.uid"), index=True)
     ownerID = _sql.Column(_sql.Integer, index=True)
     ownerNO = _sql.Column(_sql.String, index=True)
-    # deviceID = _sql.Column(_sql.Integer, _sql.ForeignKey("devices.deviceID"), unique=True, index=True)
     whLoc = _sql.Column(_sql.String)
 
 class Assets(_database.Base):
