@@ -42,19 +42,19 @@ async def get_trips(user: _schemas.User = _fastapi.Depends(_services.get_current
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-@app.post("/api/wares", response_model=_schemas.Warehouses)
-async def create_wares( ware: _schemas.Warehouses, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return await _services.create_wares(user=user, db=db, ware=ware)
+@app.post("/api/locs", response_model=_schemas.Locations)
+async def create_wares( ware: _schemas.Locations, db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return await _services.create_locs(db=db, ware=ware)
 
-@app.get("/api/wares", response_model=List[_schemas.Warehouses])
-async def get_wares(user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return await _services.get_wares(user=user, db=db)
+@app.get("/api/locs", response_model=List[_schemas.Locations])
+async def get_locs(db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.get_locs( db=db)
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/api/devices", response_model=_schemas.Devices)
-async def create_devices( device: _schemas.Devices, trip: _schemas.Trips,ware: _schemas.Warehouses, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return await _services.create_devices(user=user, db=db, device=device, trip=trip, ware=ware)
+async def create_devices( device: _schemas.Devices, trip: _schemas.Trips, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return await _services.create_devices(user=user, db=db, device=device, trip=trip)
 
 @app.get("/api/devices", response_model=List[_schemas.Devices])
 async def get_devices(db: _orm.Session = _fastapi.Depends(_services.get_db)):
@@ -63,17 +63,17 @@ async def get_devices(db: _orm.Session = _fastapi.Depends(_services.get_db)):
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/api/assets", response_model=_schemas.Assets)
-async def create_assets( asset: _schemas.Assets, trip: _schemas.Trips, ware: _schemas.Warehouses, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return await _services.create_assets(user=user, db=db, asset=asset, trip=trip, ware=ware)
+async def create_assets( asset: _schemas.Assets, trip: _schemas.Trips, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return await _services.create_assets(user=user, db=db, asset=asset, trip=trip)
 
 @app.get("/api/assets", response_model=List[_schemas.Assets])
 async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_all_items(db, _models.Assets)
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# @app.post("/api/sensors", response_model=_schemas.Sensors)
-# async def create_sensors( device: _schemas.Devices, sens: _schemas.Sensors, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-#     return await _services.create_sensors(user=user, db=db, device=device, sens=sens)
+@app.post("/api/sensors", response_model=_schemas.Sensors)
+async def create_sensors(device: _schemas.Devices, sens: _schemas.Sensors, db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return _services.create_sensors(channel_id=channel_id, read_api_key=read_api_key, db=db, device=device, sens=sens)
 
 @app.get("/api/sensors", response_model=List[_schemas.Sensors])
 async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
@@ -95,9 +95,9 @@ async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
 async def get_trip( trip_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_item(item_id=trip_id, db=db, item_model=_models.Trips,item_id_attr=_models.Trips.tripID)
 
-@app.get("/api/wares/{ware_id}", status_code=200)
-async def get_ware(ware_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _services.get_item(item_id=ware_id, db=db, item_model=_models.Warehouses,item_id_attr=_models.Warehouses.whID)
+@app.get("/api/locs/{loc_id}", status_code=200)
+async def get_ware(loc_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.get_item(item_id=loc_id, db=db, item_model=_models.Locations,item_id_attr=_models.Locations.locID)
 
 @app.get("/api/devices/{device_id}", status_code=200)
 async def get_device(device_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
@@ -121,9 +121,9 @@ async def get_alarm(alarm_id: int, db: _orm.Session = _fastapi.Depends(_services
 async def delete_trip( trip_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.delete_item(item_id=trip_id, db=db, item_model=_models.Trips,item_id_attr=_models.Trips.tripID)
 
-@app.delete("/api/wares/{ware_id}", status_code=204)
+@app.delete("/api/locs/{ware_id}", status_code=204)
 async def delete_ware(ware_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _services.delete_item(item_id=ware_id, db=db, item_model=_models.Warehouses,item_id_attr=_models.Warehouses.whID)
+    return await _services.delete_item(item_id=ware_id, db=db, item_model=_models.Locations,item_id_attr=_models.Locations.locID)
 
 @app.delete("/api/devices/{device_id}", status_code=204)
 async def delete_device(device_id: int, db: _orm.Session = _fastapi.Depends(_services.get_db)):
@@ -147,6 +147,3 @@ async def delete_alarm(alarm_id: int, db: _orm.Session = _fastapi.Depends(_servi
 async def root():
     return {"message": "Awesome CCM Application"}
 
-@app.post("/api/sensors", response_model=_schemas.Sensors)
-async def create_sensors(device: _schemas.Devices, sens: _schemas.Sensors, db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return _services.create_sensors(channel_id=channel_id, read_api_key=read_api_key, db=db, device=device, sens=sens)

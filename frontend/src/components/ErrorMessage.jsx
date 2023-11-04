@@ -1,7 +1,7 @@
 import React from "react";
 
 const ErrorMessage = ({ message }) => (
-  <p className="has-text-weight-bold has-text-danger">{message}</p>
+  <p className="p-5 text-xl text-[#ff2125] font-medium">{message}</p>
 );
 
 export default ErrorMessage;

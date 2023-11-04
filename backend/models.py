@@ -6,7 +6,6 @@ import database as _database
 class Users(_database.Base):
     __tablename__ = "users"
     uid = _sql.Column(_sql.Integer, primary_key=True, index=True)
-    name = _sql.Column(_sql.String)
     email = _sql.Column(_sql.String, index=True)
     hashed_password = _sql.Column(_sql.Integer)
 
@@ -23,23 +22,18 @@ class Trips(_database.Base):
     src = _sql.Column(_sql.String)
     destLoc = _sql.Column(_sql.String)
     dest = _sql.Column(_sql.String)
-    # eta = _sql.Column(_sql.Time)
-    # cp1 = _sql.Column(_sql.Boolean, default=" ")
-    # cp2 = _sql.Column(_sql.Boolean, default=" ")
-    # cp3 = _sql.Column(_sql.Boolean, default=" ")
+    
 
-class Warehouses(_database.Base):
-    __tablename__ = "wares"
-    whID = _sql.Column(_sql.Integer, primary_key=True, index=True)
-    uid = _sql.Column(_sql.Integer, _sql.ForeignKey("users.uid"), index=True)
+class Locations(_database.Base):
+    __tablename__ = "locations"
+    locID = _sql.Column(_sql.Integer, primary_key=True, index=True)
     ownerID = _sql.Column(_sql.Integer, index=True)
     ownerNO = _sql.Column(_sql.String, index=True)
-    whLoc = _sql.Column(_sql.String)
+    locLoc = _sql.Column(_sql.String)
 
 class Assets(_database.Base):
     __tablename__ = "assets"
     assetID = _sql.Column(_sql.Integer, primary_key=True, index=True)
-    whID = _sql.Column(_sql.Integer, _sql.ForeignKey("wares.whID"), index=True)
     tripID = _sql.Column(_sql.Integer, _sql.ForeignKey("trips.tripID"), index=True)
     assetName = _sql.Column(_sql.String)
     assetType = _sql.Column(_sql.String)
@@ -48,7 +42,6 @@ class Assets(_database.Base):
 class Devices(_database.Base):
     __tablename__ = "devices"
     deviceID = _sql.Column(_sql.Integer, unique=True, primary_key=True, index=True)
-    whID = _sql.Column(_sql.Integer, _sql.ForeignKey("wares.whID"), index=True)
     tripID = _sql.Column(_sql.Integer, _sql.ForeignKey("trips.tripID"), index=True)
     deviceName = _sql.Column(_sql.String)
     status = _sql.Column(_sql.String)

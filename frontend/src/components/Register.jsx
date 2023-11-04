@@ -39,72 +39,72 @@ const Register = () => {
       };
     
     return (
-        <div className="column">
-            <form className="box" onSubmit={handleSubmit}>
-                <h1 className="title has-text-centered">Register</h1>
-                <div className="field">
-                    <label className="label">
+        <div className="border rounded-md w-[550px] items-center justify-center border-black bg-[#5A5A5A]">
+            <form className="container p-10 flex flex-col" onSubmit={handleSubmit}>
+                <h1 className="font-bold text-center text-white text-3xl">Register</h1>
+                <div className="pt-5 px-5">
+                    <label className="block mb-2 text-xl font-medium text-white">
                         Username
                     </label>
-                    <div className="control">
+                    <div >
                         <input 
                         type="text" 
                         placeholder="Enter Username" 
                         value={name} 
                         onChange={ (e) => setName(e.target.value)}
-                        className="input"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                         required
                         />
                     </div>
                 </div>
-                <div className="field">
-                    <label className="label">
+                <div className="p-5">
+                    <label className="block mb-2 text-xl font-medium text-white">
                         Email Address
                     </label>
-                    <div className="control">
+                    <div >
                         <input 
                         type="email" 
                         placeholder="Enter email" 
                         value={email} 
                         onChange={ (e) => setEmail(e.target.value)}
-                        className="input"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                         required
                         />
                     </div>
                 </div>
-                <div className="field">
-                    <label className="label">
+                <div className="px-5">
+                    <label className="block mb-2 text-xl font-medium text-white">
                         Password
                     </label>
-                    <div className="control">
+                    <div >
                         <input 
                         type="password" 
                         placeholder="Enter password" 
                         value={password} 
                         onChange={ (e) => setPassword(e.target.value)}
-                        className="input"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                         required
                         />
                     </div>
                 </div>
-                <div className="field">
-                    <label className="label">
+                <div className="p-5">
+                    <label className="block mb-2 text-xl font-medium text-white">
                         Confirm Password
                     </label>
-                    <div className="control">
+                    <div >
                         <input 
                         type="password" 
                         placeholder="Enter password again" 
                         value={confirmationPassword} 
                         onChange={ (e) => setConfirmationPassword(e.target.value)}
-                        className="input"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                         required
                         />
                     </div>
                 </div>
                 <ErrorMessage message={errorMessage} />
                 <br />
-                <button type="submit" className="button is-primary">
+                <button type="submit" className="w-full text-white bg-[#FF7B08] font-bold rounded-lg block text-xl px-5 py-2.5 text-center ">
                     Register
                 </button>
             </form>

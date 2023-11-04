@@ -1,0 +1,99 @@
+import React, { useEffect } from 'react';
+import Chart from 'chart.js/auto';
+import axios from 'axios'; // Import Axios
+
+const Dashboard = () => {
+  useEffect(() => {
+    function getData() {
+      var url =
+        'https://api.thingspeak.com/channels/2309020/fields/1,2.json?api_key=I2TWU0ISG1JNAJDI&results=5';
+
+      axios.get(url) // Use Axios to make the API request
+        .then((response) => {
+          const data = response.data;
+          var field1Values = [];
+          var field2Values = [];
+          var timestamps = [];
+
+          data.feeds.forEach((feed) => {
+            field1Values.push(feed.field1);
+            field2Values.push(feed.field2);
+            timestamps.push(feed.created_at);
+          });
+
+          var tempp = document.getElementById('myChart1').getContext('2d');
+          var humm = document.getElementById('myChart2').getContext('2d');
+
+          var chart1 = new Chart(tempp, {
+            type: 'line',
+            data: {
+              labels: timestamps,
+              datasets: [
+                {
+                  label: 'Temperature',
+                  data: field1Values,
+                  borderColor: '',
+                  backgroundColor: '#84bd00',
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                    },
+                  },
+                ],
+              },
+            },
+          });
+          
+          var chart2 = new Chart(humm, {
+            type: 'line',
+            data: {
+              labels: timestamps,
+              datasets: [
+                {
+                  label: 'Humidity',
+                  data: field2Values,
+                  borderColor: '',
+                  backgroundColor: '#00205b',
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                    },
+                  },
+                ],
+              },
+            },
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+    getData();
+  }, []);
+
+  return (
+    <div className='h-full w-full bg-white'>
+      <div className='w-1/2'>
+        <canvas id='myChart1'></canvas>
+        <canvas id='myChart2'></canvas>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

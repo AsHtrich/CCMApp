@@ -2,7 +2,7 @@ import React from 'react'
 
 const Analytics = () => {
   return (
-    <div>Analytics</div>
+    <div className='h-full w-full bg-red-500'>Analytics</div>
   )
 }
 

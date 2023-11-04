@@ -9,7 +9,7 @@ const Lilo = () => {
   };
 
   return (
-    <div className="has-text-centered m-6">
+    <div className="text-center m-6">
       {token && (
         <button className="button" onClick={handleLogout}>
           Logout

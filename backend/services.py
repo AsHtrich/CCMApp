@@ -80,25 +80,22 @@ async def get_trips(user: _schemas.User, db: _orm.Session):
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async def create_wares(ware: _schemas.Warehouses, user: _schemas.User, db: _orm.Session):
-    existing_ware = db.query(_models.Warehouses).filter(_models.Warehouses.whID == ware.whID).first()
-    if existing_ware:
-        raise _fastapi.HTTPException(status_code=400, detail="Duplicate whID")
+async def create_locs(ware: _schemas.Locations, db: _orm.Session):
     
-    wh_obj = _models.Warehouses(
-        whID=ware.whID, ownerID=ware.ownerID, ownerNO=ware.ownerNO, whLoc=ware.whLoc, uid=user.uid
+    loc_obj = _models.Locations(
+        locID=ware.locID, ownerID=ware.ownerID, ownerNO=ware.ownerNO, locLoc=ware.locLoc
     )
-    db.add(wh_obj)
+    db.add(loc_obj)
     db.commit()
-    db.refresh(wh_obj)
-    return wh_obj
+    db.refresh(loc_obj)
+    return loc_obj
 
-async def get_wares(user: _schemas.User, db: _orm.Session):
-    allWares = db.query(_models.Warehouses).filter_by(uid=user.uid)
-    return list(map(_schemas.Warehouses.model_validate, allWares))
+async def get_locs(db: _orm.Session):
+    alllocs = db.query(_models.Locations).all()
+    return list(map(_schemas.Locations.model_validate, alllocs))
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async def create_devices(trip: _schemas.Trips, ware: _schemas.Warehouses, device: _schemas.Devices, user: _schemas.User, db: _orm.Session):
+async def create_devices(trip: _schemas.Trips, device: _schemas.Devices, user: _schemas.User, db: _orm.Session):
     
     existing_device = db.query(_models.Devices).filter(_models.Devices.deviceID == device.deviceID).first()
     if existing_device:
@@ -112,16 +109,8 @@ async def create_devices(trip: _schemas.Trips, ware: _schemas.Warehouses, device
     if not trip_obj:
         raise _fastapi.HTTPException(status_code=400, detail="Invalid tripID")
     
-    ware_obj = db.query(_models.Warehouses).filter(_models.Warehouses.whID == ware.whID).first() 
-    if not ware_obj:
-        raise _fastapi.HTTPException(status_code=400, detail="Invalid whID")
-    
-    existing_ware = db.query(_models.Devices).filter(_models.Devices.whID == device.whID).first() 
-    if existing_ware:
-        raise _fastapi.HTTPException(status_code=400, detail="whID already assigned to another device")
-
     device_obj = _models.Devices(
-        deviceID=device.deviceID, status=device.status, deviceName=device.deviceName, whID=ware.whID, tripID=trip.tripID
+        deviceID=device.deviceID, status=device.status, deviceName=device.deviceName, tripID=trip.tripID
     )
     db.add(device_obj)
     db.commit()
@@ -129,7 +118,7 @@ async def create_devices(trip: _schemas.Trips, ware: _schemas.Warehouses, device
     return device_obj
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async def create_assets(trip: _schemas.Trips, ware: _schemas.Warehouses, asset: _schemas.Assets, user: _schemas.User, db: _orm.Session):
+async def create_assets(trip: _schemas.Trips, asset: _schemas.Assets, user: _schemas.User, db: _orm.Session):
     
     existing_asset = db.query(_models.Assets).filter(_models.Assets.assetID == asset.assetID).first()
     if existing_asset:
@@ -143,15 +132,7 @@ async def create_assets(trip: _schemas.Trips, ware: _schemas.Warehouses, asset: 
     if not trip_obj:
         raise _fastapi.HTTPException(status_code=400, detail="Invalid tripID")
     
-    ware_obj = db.query(_models.Warehouses).filter(_models.Warehouses.whID == ware.whID).first() 
-    if not ware_obj:
-        raise _fastapi.HTTPException(status_code=400, detail="Invalid whID")
-    
-    existing_ware = db.query(_models.Assets).filter(_models.Assets.whID == asset.whID).first() 
-    if existing_ware:
-        raise _fastapi.HTTPException(status_code=400, detail="whID already assigned to another asset")
-    
-    asset_obj = _models.Assets(assetID=asset.assetID, src=asset.src, assetName=asset.assetName, assetType=asset.assetType, whID=ware.whID, tripID=trip.tripID)
+    asset_obj = _models.Assets(assetID=asset.assetID, src=asset.src, assetName=asset.assetName, assetType=asset.assetType, tripID=trip.tripID)
     db.add(asset_obj)
     db.commit()
     db.refresh(asset_obj)
@@ -186,7 +167,9 @@ async def create_alarms(alarm: _schemas.Alarms, sens: _schemas.Sensors, device:_
 async def get_all_items(db: _orm.Session, model: _models._database.Base):
     all_items = db.query(model).all()
     return list(all_items)
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
 
 async def _item_selector(item_id, db, item_model, item_id_attr):
     item = (db.query(item_model).filter(item_id_attr == item_id).first())
@@ -208,29 +191,6 @@ async def delete_item(item_id, db, item_model, item_id_attr):
     db.commit()
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# async def create_sensors(device: _schemas.Devices, sens: _schemas.Sensors, user: _schemas.User, db: _orm.Session):
-#     # existing_entry = db.query(_models.Sensors).filter(_models.Sensors.entryID == sens.entryID).first()
-#     # if existing_entry:
-#     #     raise _fastapi.HTTPException(status_code=400, detail="Duplicate entryID")
-    
-#     # sensor_obj = db.query(_models.Sensors).filter((_models.Sensors.entryID == sens.entryID) & (_models.Sensors.timestamp == sens.timestamp)).first()
-#     # if not sensor_obj :
-#     #     raise _fastapi.HTTPException(status_code=400, detail="Invalid entryID or deviceID")
-    
-#     sensor_obj = db.query(_models.Sensors).filter(
-#     (_models.Sensors.entryID == sens.entryID) & (_models.Sensors.timestamp == sens.timestamp)).first()
-#     if sensor_obj is not None:
-#         raise _fastapi.HTTPException(status_code=400, detail="Entry with the same timestamp and entryID already exists")
-
-#     device_obj = db.query(_models.Devices).filter(_models.Devices.deviceID == device.deviceID).first() 
-#     if not device_obj:
-#         raise _fastapi.HTTPException(status_code=400, detail="Invalid deviceID")
-    
-#     sens_obj = _models.Sensors(entryID=sens.entryID, temperature=sens.temperature, pressure=sens.pressure, humidity=sens.humidity, light=sens.light, shock=sens.shock, latitude=sens.latitude, longitude=sens.longitude, deviceID=sens.deviceID, timestamp=sens.timestamp)
-#     db.add(sens_obj)
-#     db.commit()
-#     db.refresh(sens_obj)
-#     return sens_obj
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device: _schemas.Devices, sens: _schemas.Sensors ):
@@ -284,3 +244,4 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
     db.commit()
     db.refresh(sens_obj)
     return sens_obj
+
