@@ -25,7 +25,7 @@ async def get_user_by_email(email: str, db: _orm.Session):
     return db.query(_models.Users).filter(_models.Users.email == email).first()
 
 async def create_user(user: _schemas.UserCreate, db: _orm.Session):
-    user_obj = _models.Users(email=user.email, hashed_password=_hash.bcrypt.hash(user.hashed_password), name=user.name)
+    user_obj = _models.Users(email=user.email, hashed_password=_hash.bcrypt.hash(user.hashed_password))
     db.add(user_obj)
     db.commit()
     db.refresh(user_obj)
@@ -210,7 +210,7 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
     for senso in feeds:
         print(senso)
         entry_id = int(senso['entry_id'])
-        timestamp = _dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%SZ")
+        timestamp = _dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%S").strftime("%H:%M:%S")
         temperature = float(senso['field1'])
         print(senso['field2'])
         humidity = senso['field2']

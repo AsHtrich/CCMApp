@@ -14,7 +14,7 @@ const Register = () => {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({name:name, email: email, hashed_password: password }),
+          body: JSON.stringify({email: email, hashed_password: password }),
         };
     
         const response = await fetch("/api/users", requestOptions);
@@ -42,21 +42,6 @@ const Register = () => {
         <div className="border rounded-md w-[550px] items-center justify-center border-black bg-[#5A5A5A]">
             <form className="container p-10 flex flex-col" onSubmit={handleSubmit}>
                 <h1 className="font-bold text-center text-white text-3xl">Register</h1>
-                <div className="pt-5 px-5">
-                    <label className="block mb-2 text-xl font-medium text-white">
-                        Username
-                    </label>
-                    <div >
-                        <input 
-                        type="text" 
-                        placeholder="Enter Username" 
-                        value={name} 
-                        onChange={ (e) => setName(e.target.value)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-                        required
-                        />
-                    </div>
-                </div>
                 <div className="p-5">
                     <label className="block mb-2 text-xl font-medium text-white">
                         Email Address

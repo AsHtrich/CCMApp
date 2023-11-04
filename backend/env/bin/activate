@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/gigachod/Documents/ColdEye/CCMApp/backend/env"
+VIRTUAL_ENV="/home/austin/Austin/CCMApp/backend/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

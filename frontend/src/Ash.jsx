@@ -38,7 +38,7 @@ const Ash = () => {
   return (
    
 
-        <div className="h-full bg-black w-full items-center justify-center">
+        <div className="h-full w-full items-center justify-center">
           {!token ? (
            
               <div className="flex h-full my-0 flex-row items-center justify-center">

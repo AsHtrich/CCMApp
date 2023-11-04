@@ -1,231 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import Chart from 'chart.js/auto';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet'; // You need to import the 'leaflet' library
+import redMarkerIcon from '../assets/red_marker-icon.png';
 
 const Dashboard = () => {
-  const [tempChart, setTempChart] = useState(null);
-  const [humidityChart, setHumidityChart] = useState(null);
-  const [pressureChart, setPressureChart] = useState(null);
+  const [position, setPosition] = useState([13.082680, 80.270721]);
+  const [newLat, setNewLat] = useState(null);
+  const [newLng, setNewLng] = useState(null);
+  const [mapKey, setMapKey] = useState(0); // Add a key for MapContainer
 
-  useEffect(() => {
-    function updateCharts() {
-      // Fetch new data for temperature, humidity, and pressure
-      axios.get('https://api.thingspeak.com/channels/2309020/fields/1.json?api_key=I2TWU0ISG1JNAJDI&results=1')
-        .then((response) => {
-          const data = response.data.feeds[0];
-          const timestamp = data.created_at;
-          const temperature = parseFloat(data.field1);
+  // Create a custom red marker icon
+    const customMarkerIcon = new L.Icon({
+    iconUrl: redMarkerIcon,
+    iconSize: [32, 32], // Set the size of the red marker icon
+    iconAnchor: [16, 32], // Set the anchor point to half the height of the icon
+  });
 
-          // Update temperature chart
-          if (tempChart) {
-            tempChart.data.labels.push(timestamp);
-            tempChart.data.datasets[0].data.push(temperature);
+  
+  const handleLatChange = (e) => {
+    const lat = parseFloat(e.target.value);
+    setNewLat(!isNaN(lat) ? lat : '');
+  };
 
-            // Remove the oldest entry if the number of entries exceeds 5
-            if (tempChart.data.labels.length > 5) {
-              tempChart.data.labels.shift();
-              tempChart.data.datasets[0].data.shift();
-            }
+  const handleLngChange = (e) => {
+    const lng = parseFloat(e.target.value);
+    setNewLng(!isNaN(lng) ? lng : '');
+  };
 
-            tempChart.update();
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching temperature data:', error);
-        });
-
-      axios.get('https://api.thingspeak.com/channels/2309020/fields/2.json?api_key=I2TWU0ISG1JNAJDI&results=1')
-        .then((response) => {
-          const data = response.data.feeds[0];
-          const timestamp = data.created_at;
-          const humidity = parseFloat(data.field2);
-
-          // Update humidity chart
-          if (humidityChart) {
-            humidityChart.data.labels.push(timestamp);
-            humidityChart.data.datasets[0].data.push(humidity);
-
-            // Remove the oldest entry if the number of entries exceeds 5
-            if (humidityChart.data.labels.length > 5) {
-              humidityChart.data.labels.shift();
-              humidityChart.data.datasets[0].data.shift();
-            }
-
-            humidityChart.update();
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching humidity data:', error);
-        });
-
-      axios.get('https://api.thingspeak.com/channels/2309020/fields/3.json?api_key=I2TWU0ISG1JNAJDI&results=1')
-        .then((response) => {
-          const data = response.data.feeds[0];
-          const timestamp = data.created_at;
-          const pressure = parseFloat(data.field3);
-
-          // Update pressure chart
-          if (pressureChart) {
-            pressureChart.data.labels.push(timestamp);
-            pressureChart.data.datasets[0].data.push(pressure);
-
-            // Remove the oldest entry if the number of entries exceeds 5
-            if (pressureChart.data.labels.length > 5) {
-              pressureChart.data.labels.shift();
-              pressureChart.data.datasets[0].data.shift();
-            }
-
-            pressureChart.update();
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching pressure data:', error);
-        });
+  const handleUpdateMap = () => {
+    if (!isNaN(newLat) && !isNaN(newLng)) {
+      setPosition([newLat, newLng]);
+      setMapKey((prevKey) => prevKey + 1); // Change the key to trigger a reload
     }
-
-    // Create an initial empty chart for temperature
-    var tempCtx = document.getElementById('myChart1').getContext('2d');
-    var tempChart = new Chart(tempCtx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: 'Temperature',
-            data: [],
-            borderColor: '#84bd00',
-            fill: false,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Temperature Chart',
-        },
-        scales: {
-          x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Time',
-            },
-            ticks: {
-              maxTicksLimit: 5, // Set the maximum number of x-axis ticks
-            },
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-
-    // Create an initial empty chart for humidity
-    var humidityCtx = document.getElementById('myChart2').getContext('2d');
-    var humidityChart = new Chart(humidityCtx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: 'Humidity',
-            data: [],
-            borderColor: '#00205b',
-            fill: false,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Humidity Chart',
-        },
-        scales: {
-          x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Time',
-            },
-            ticks: {
-              maxTicksLimit: 5, // Set the maximum number of x-axis ticks
-            },
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-
-    // Create an initial empty chart for pressure
-    var pressureCtx = document.getElementById('myChart3').getContext('2d');
-    var pressureChart = new Chart(pressureCtx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: 'Pressure',
-            data: [],
-            borderColor: '#ff0000',
-            fill: false,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Pressure Chart',
-        },
-        scales: {
-          x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Time',
-            },
-            ticks: {
-              maxTicksLimit: 5, // Set the maximum number of x-axis ticks
-            },
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-
-    // Set the initial chart instances
-    setTempChart(tempChart);
-    setHumidityChart(humidityChart);
-    setPressureChart(pressureChart);
-
-    // Update charts periodically
-    const updateInterval = setInterval(updateCharts, 30000); // Update every 30 seconds
-
-    // Clean up the interval when the component unmounts
-    return () => {
-      clearInterval(updateInterval);
-    };
-  }, []);
+  };
 
   return (
-    <div className='h-full w-full bg-white'>
-      <div className='w-1/3'>
-        <canvas id='myChart1'></canvas>
+    <div className='flex flex-row bg-white'>
+      <div className='w-1/2'>
+          <h1>hello</h1>
       </div>
-      <div className='w-1/3'>
-        <canvas id='myChart2'></canvas>
-      </div>
-      <div className='w-1/3'>
-        <canvas id='myChart3'></canvas>
-      </div>
-    </div>
+      <div className='h-[900px] border border-black p-[5px] rounded  w-1/2'>
+          <MapContainer
+            key={mapKey} // Set the key to trigger a reload
+            center={position}
+            zoom={13}
+            className='h-full w-full'
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={position} icon={customMarkerIcon}>
+              <Popup>
+                Latitude: {position[0]}, Longitude: {position[1]}
+              </Popup>
+            </Marker>
+          </MapContainer>
+        </div>
+    </div> 
   );
 };
 
