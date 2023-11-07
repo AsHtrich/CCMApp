@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Lilo from './Lilo';
 import {
     FaTh,
     FaBars,
@@ -49,7 +48,7 @@ const Sidebar = ({children}) => {
         },
     ]
     return (
-        <div className="container">
+        <div className="container overflow-hidden relative h-screen">
            <div style={{width: isOpen ? "200px" : "50px"}} className="sidebar">
                <div className="top_section">
                     <img style={{display: isOpen ? "block" : "none"}} alt='ccc' />
@@ -65,9 +64,9 @@ const Sidebar = ({children}) => {
                        </NavLink>
                    ))
                }
-               <Lilo></Lilo>
+               
            </div>
-           <main>{children}</main>
+           <main className='bg-[#5A5A5A]'>{children}</main>
            
         </div>
         

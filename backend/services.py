@@ -210,7 +210,7 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
     for senso in feeds:
         print(senso)
         entry_id = int(senso['entry_id'])
-        timestamp = _dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%S").strftime("%H:%M:%S")
+        timestamp = _dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%SZ")
         temperature = float(senso['field1'])
         print(senso['field2'])
         humidity = senso['field2']

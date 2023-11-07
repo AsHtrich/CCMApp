@@ -11,7 +11,7 @@ const Lilo = () => {
   return (
     <div className="text-center m-6">
       {token && (
-        <button className="button" onClick={handleLogout}>
+        <button className="bg-[#5A5A5A] hover:bg-black text-white font-medium border-black border-2 text-xl px-6 py-1 rounded-full" onClick={handleLogout}>
           Logout
         </button>
       )}
