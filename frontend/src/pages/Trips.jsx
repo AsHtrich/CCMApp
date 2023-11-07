@@ -57,7 +57,7 @@ const Trips = () => {
   };
 
   return (
-    <div className="bg-[#5A5A5A] h-full">
+    <div className="bg-[#111111] h-full">
       <div className='bg-[#eb760f] w-full flex justify-between border-y-2 border-black items-center h-[58px]'>
           <h1 className='text-black px-[72px] font-bold text-3xl'>DASHBOARD</h1>
           <div className='flex flex-row '>
@@ -78,7 +78,7 @@ const Trips = () => {
        
       <div className="flex items-centre justify-center m-2">
         <button
-        className="w-1/4 p-2 text-2xl font-bold mb-4 rounded-2xl text-white bg-black"
+        className="w-1/4 p-2 text-2xl font-bold mb-4 border-2 rounded-3xl text-white bg-black"
         onClick={() => setActiveModal(true)}
       >
         Create Trip
@@ -87,7 +87,7 @@ const Trips = () => {
       
      
       {loaded && trips ? (
-        <div className="mx-[56px] h-[350px] overflow-auto px-2 pt-6 rounded-lg shadow-lg bg-[#EEEEEE] ">
+        <div className="mx-[56px] h-[350px] overflow-auto px-2 pt-6 shadow-lg bg-[#EEEEEE] rounded-3xl">
           <table className=" w-full table-auto">
           <thead>
             <tr className="text-xl">

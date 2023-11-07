@@ -1,3 +1,4 @@
+import functools
 import fastapi as _fastapi
 import fastapi.security as _security
 import datetime as _dt
@@ -7,6 +8,8 @@ import database as _database, models as _models, schemas as _schemas
 import jwt as _jwt
 import thingspeak
 import json
+from sqlalchemy import func
+
 
 oauth2schema = _security.OAuth2PasswordBearer(tokenUrl="/api/token")
 JWT_SECRET = "myjwtsecret"
@@ -139,7 +142,7 @@ async def create_assets(trip: _schemas.Trips, asset: _schemas.Assets, user: _sch
     return asset_obj
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-async def create_alarms(alarm: _schemas.Alarms, sens: _schemas.Sensors, device:_schemas.Devices, user: _schemas.User, db: _orm.Session):
+async def create_alarms(alarm: _schemas.Alarms, sens: _schemas.Sensors, device:_schemas.Devices,  db: _orm.Session):
     
     existing_alarm = db.query(_models.Alarms).filter(_models.Alarms.alarmID == alarm.alarmID).first()
     if existing_alarm:
@@ -157,7 +160,7 @@ async def create_alarms(alarm: _schemas.Alarms, sens: _schemas.Sensors, device:_
     device_obj = db.query(_models.Devices).filter(_models.Devices.deviceID == device.deviceID).first() 
     if not device_obj:
         raise _fastapi.HTTPException(status_code=400, detail="Invalid deviceID")
-    alarm_obj = _models.Alarms( entryID=alarm.entryID, alarmID=alarm.alarmID, desc=alarm.desc, deviceID=alarm.deviceID, uid=alarm.uid, timestamp=alarm.timestamp)
+    alarm_obj = _models.Alarms( entryID=alarm.entryID, alarmID=alarm.alarmID, desc=alarm.desc, deviceID=alarm.deviceID, timestamp=alarm.timestamp)
     db.add(alarm_obj)
     db.commit()
     db.refresh(alarm_obj)
@@ -190,7 +193,7 @@ async def delete_item(item_id, db, item_model, item_id_attr):
     db.delete(item)
     db.commit()
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
-
+max_alarm_id = 0 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device: _schemas.Devices, sens: _schemas.Sensors ):
@@ -206,7 +209,7 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
     # Extract the feeds
     feeds = parsed_data['feeds']
     
-
+    max_alarm_id = db.query(func.max(_models.Alarms.alarmID)).scalar() or 0
     for senso in feeds:
         print(senso)
         entry_id = int(senso['entry_id'])
@@ -214,12 +217,50 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
         temperature = float(senso['field1'])
         print(senso['field2'])
         humidity = senso['field2']
-        pressure = senso['field3']
+        pressure = round(float(senso['field3'])/101325.0 , 4)
         light = 100
         shock = 100
         latitude = 100
         longitude = 100
-        deviceID = device.deviceID
+        deviceID = 666
+
+        if float(senso['field1']) > 34:
+            max_alarm_id += 1 
+            alarm_obj = _models.Alarms(
+                alarmID=max_alarm_id,
+                entryID=int(senso['entry_id']), 
+                desc="Exceeded Threshold for Temperature" , 
+                deviceID= 666, 
+                timestamp=_dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%SZ"),
+                )
+            db.add(alarm_obj)
+        db.commit()
+
+        if float(senso['field2']) > 90:
+            max_alarm_id += 1 
+            alarm_obj = _models.Alarms(
+                alarmID=max_alarm_id,
+                entryID=int(senso['entry_id']), 
+                desc="Exceeded Threshold for Humidity" , 
+                deviceID= 666, 
+                timestamp=_dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%SZ"),
+                )
+            db.add(alarm_obj)
+        db.commit()
+
+        if float(senso['field3']) > 1.001:
+            max_alarm_id += 1 
+            alarm_obj = _models.Alarms(
+                alarmID=max_alarm_id,
+                entryID=int(senso['entry_id']), 
+                desc="Exceeded Threshold for Pressure" , 
+                deviceID= 666, 
+                timestamp=_dt.datetime.strptime(senso['created_at'], "%Y-%m-%dT%H:%M:%SZ"),
+                )
+            db.add(alarm_obj)
+        db.commit()
+
+        
 
         # Check if the data already exists in the database (based on entryID and timestamp)
         sensor_obj = db.query(_models.Sensors).filter(
@@ -244,4 +285,3 @@ def create_sensors(channel_id: int, read_api_key: str, db: _orm.Session, device:
     db.commit()
     db.refresh(sens_obj)
     return sens_obj
-

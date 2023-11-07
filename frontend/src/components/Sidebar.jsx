@@ -22,13 +22,13 @@ const Sidebar = ({children}) => {
             icon:<FaTh/>
         },
         {
-            path:"/analytics",
-            name:"Analytics",
+            path:"/data",
+            name:"Data",
             icon:<FaRegChartBar/>
         },
         {
-            path:"/devices",
-            name:"Devices",
+            path:"/graphs",
+            name:"Graphs",
             icon:<FaShoppingBag/>
         },
         {
@@ -49,7 +49,7 @@ const Sidebar = ({children}) => {
     ]
     return (
         <div className="container overflow-hidden relative h-screen">
-           <div style={{width: isOpen ? "200px" : "50px"}} className="sidebar">
+           <div style={{width: isOpen ? "200px" : "50px"}} className="sidebar border-r-[#5A5A5A] border-r-4 ">
                <div className="top_section">
                     <img style={{display: isOpen ? "block" : "none"}} alt='ccc' />
                    <div style={{marginLeft: isOpen ? "50px" : "0px"}} className="bars">

@@ -135,10 +135,9 @@ class Sensors(_SensorBase):
 
 class _AlarmBase(_pyd.BaseModel):
     desc: str
-    uid: int
     deviceID: int
     entryID: int
-    alarmID: int
+    alarmID: Optional[int]
     timestamp : _dt.datetime
 
 class AlarmCreate(_AlarmBase):

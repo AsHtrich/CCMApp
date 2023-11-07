@@ -61,8 +61,7 @@ class Sensors(_database.Base):
 
 class Alarms(_database.Base):
     __tablename__ = "alarms"
-    alarmID = _sql.Column(_sql.Integer, unique=True, primary_key=True, index=True)
-    uid = _sql.Column(_sql.Integer, _sql.ForeignKey("users.uid"), index=True)
+    alarmID = _sql.Column(_sql.Integer, unique=True, primary_key=True)
     deviceID = _sql.Column(_sql.Integer, _sql.ForeignKey("devices.deviceID"),  index=True)
     entryID = _sql.Column(_sql.Integer, _sql.ForeignKey("sensors.entryID"),  index=True)
     desc = _sql.Column(_sql.String)

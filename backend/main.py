@@ -82,11 +82,11 @@ async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/api/alarms", response_model=_schemas.Alarms)
-async def create_alarms( device: _schemas.Devices,sens: _schemas.Sensors, alarm: _schemas.Alarms, user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
-    return await _services.create_alarms(user=user, db=db, device=device, sens=sens, alarm=alarm)
+async def create_alarms( device: _schemas.Devices,sens: _schemas.Sensors, alarm: _schemas.Alarms, db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return await _services.create_alarms( db=db, device=device, sens=sens, alarm=alarm)
 
 @app.get("/api/alarms", response_model=List[_schemas.Alarms])
-async def get_assets(db: _orm.Session = _fastapi.Depends(_services.get_db)):
+async def get_alarms(db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_all_items(db, _models.Alarms)
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
