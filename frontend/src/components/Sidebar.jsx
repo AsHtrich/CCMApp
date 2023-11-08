@@ -37,11 +37,6 @@ const Sidebar = ({children}) => {
             icon:<FaThList/>
         },
         {
-            path:"/alarms",
-            name:"Alarms",
-            icon:<FaCommentAlt/>
-        },
-        {
             path:"/about",
             name:"About",
             icon:<FaUserAlt/>
@@ -49,25 +44,23 @@ const Sidebar = ({children}) => {
     ]
     return (
         <div className="container overflow-hidden relative h-screen">
-           <div style={{width: isOpen ? "200px" : "50px"}} className="sidebar border-r-[#5A5A5A] border-r-4 ">
+           <div style={{width: isOpen ? "220px" : "50px"}} className="sidebar border-r-[#000000] border-r-4 ">
                <div className="top_section">
-                    <img style={{display: isOpen ? "block" : "none"}} alt='ccc' />
-                   <div style={{marginLeft: isOpen ? "50px" : "0px"}} className="bars">
-                       <FaBars onClick={toggle}/>
-                   </div>
+                    <img style={{display: isOpen ? "block" : "none"}} src='https://i.imgur.com/LW7VT5z.png' className='h-[80px]' alt='ccc' />
                </div>
                {
                    menuItem.map((item, index)=>(
-                       <NavLink to={item.path} key={index} className="link" activeclassName="active">
+                       <NavLink to={item.path} key={index} className="link " activeclassName="active">
                            <div className="icon">{item.icon}</div>
-                           <div style={{display: isOpen ? "block" : "none"}} className="link_text">{item.name}</div>
-                       </NavLink>
-                   ))
+                           <div style={{display: isOpen ? "block" : "none "}} className="link_text">{item.name}</div>
+                       </NavLink> 
+                   ))        
                }
-               
+               <div style={{marginLeft: isOpen ? "60px" : "12px"}} className="bars">
+                       <FaBars onClick={toggle}/>
+                   </div>   
            </div>
-           <main className='bg-[#5A5A5A]'>{children}</main>
-           
+           <main className='bg-[#111111]'>{children}</main>
         </div>
         
     );

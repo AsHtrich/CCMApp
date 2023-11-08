@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-const Analytics = () => {
+const Charts = () => {
   const [tempChart, setTempChart] = useState(null);
   const [humidityChart, setHumidityChart] = useState(null);
   const [pressureChart, setPressureChart] = useState(null);
@@ -242,4 +242,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default Charts;

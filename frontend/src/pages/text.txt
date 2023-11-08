@@ -1,99 +1,57 @@
-import React, { useEffect } from 'react';
-import Chart from 'chart.js/auto';
-import axios from 'axios'; // Import Axios
-
-const Dashboard = () => {
-  useEffect(() => {
-    function getData() {
-      var url =
-        'https://api.thingspeak.com/channels/2309020/fields/1,2.json?api_key=I2TWU0ISG1JNAJDI&results=5';
-
-      axios.get(url) // Use Axios to make the API request
-        .then((response) => {
-          const data = response.data;
-          var field1Values = [];
-          var field2Values = [];
-          var timestamps = [];
-
-          data.feeds.forEach((feed) => {
-            field1Values.push(feed.field1);
-            field2Values.push(feed.field2);
-            timestamps.push(feed.created_at);
-          });
-
-          var tempp = document.getElementById('myChart1').getContext('2d');
-          var humm = document.getElementById('myChart2').getContext('2d');
-
-          var chart1 = new Chart(tempp, {
-            type: 'line',
-            data: {
-              labels: timestamps,
-              datasets: [
-                {
-                  label: 'Temperature',
-                  data: field1Values,
-                  borderColor: '',
-                  backgroundColor: '#84bd00',
-                  borderWidth: 1,
-                },
-              ],
-            },
-            options: {
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      beginAtZero: true,
-                    },
-                  },
-                ],
-              },
-            },
-          });
-          
-          var chart2 = new Chart(humm, {
-            type: 'line',
-            data: {
-              labels: timestamps,
-              datasets: [
-                {
-                  label: 'Humidity',
-                  data: field2Values,
-                  borderColor: '',
-                  backgroundColor: '#00205b',
-                  borderWidth: 1,
-                },
-              ],
-            },
-            options: {
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      beginAtZero: true,
-                    },
-                  },
-                ],
-              },
-            },
-          });
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
-    }
-
-    getData();
-  }, []);
-
+import React, { useEffect, useState } from 'react';
+import Charts from '../components/Charts'
+import Lilo from '../components/Lilo';
+import GetSensors from '../components/GetSensors'
+import Alarms from './Alarms';
+const Graphs = () => {
+  const [page, setPage] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  
+  
   return (
-    <div className='h-full w-full bg-white'>
-      <div className='w-1/2'>
-        <canvas id='myChart1'></canvas>
-        <canvas id='myChart2'></canvas>
+    <div className='bg-black h-full'>
+      <div className='bg-[#f18912] w-full flex justify-between border-y-2 border-black items-center h-[58px]'>
+          <h1 className='text-black px-[72px] font-bold text-3xl'>DASHBOARD</h1>
+          <div className='flex flex-row '>
+            <h1 className='text-black font-semibold px-[64px] py-[32px] text-xl'>User@882003</h1>
+            <Lilo></Lilo>
+          </div>
       </div>
+      <div className='w-full flex flex-col items-center justify-center h-[120px] bg-[#5A5A5A]'>
+        <div className=' w-[90%] px-6 pt-6 '>
+            <h1 className='font-extrabold text-5xl text-white'>Device: 30082003</h1>
+        </div>
+        <div className='w-[30%] ml-[70%] flex flex-row pt-2 '>
+        <button 
+        className='border-x-4 border-t-4  hover:border-[#111111] focus:bg-black focus:border-black rounded-md py-1  px-4 text-3xl font-bold text-white '
+        onClick={() => setPage(false)}
+        >
+          Raw Data
+        </button>
+        <button 
+        className='border-x-4 border-t-4  ml-[-1px] hover:border-[#111111] focus:bg-black focus:border-black rounded-md py-1 px-4 text-3xl font-bold text-white '
+        onClick={() => setPage(true)}
+        >
+          Alarms
+        </button>
+        
+        </div>
+      </div>
+    
+      
+        {!page ? (
+            <GetSensors/>
+        ) : (           
+          <Alarms/> 
+        )}
+    
+           
+     
+
+          
+      
     </div>
   );
 };
 
-export default Dashboard;
+export default Graphs;

@@ -86,7 +86,7 @@ const Alltrips = ({ active, handleModal, token, id, setErrorMessage }) => {
 
   return (
     <div className={active ? active : 'hidden'}>
-      <div className="mx-[56px] my-4 p-2 pt-6 rounded-3xl shadow-lg bg-[#EEEEEE] flex items-centre flex-col justify-center">        
+      <div className=" my-4 p-2 pt-6 rounded-3xl shadow-lg bg-[#EEEEEE] flex items-centre flex-col justify-center">        
         <section className="">
           <h1 className="pl-4 p-4 text-red-600">* Make sure you enter unique Trip ID and Driver ID</h1>
           <form className="flex flex-row items-center">

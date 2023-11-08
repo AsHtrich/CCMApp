@@ -3,8 +3,11 @@ import Charts from '../components/Charts'
 import Lilo from '../components/Lilo';
 import GetSensors from '../components/GetSensors'
 import Alarms from './Alarms';
-const Analytics = () => {
-  const [page, setPage] = useState(false);
+const Data = () => {
+  const [page, setPage] = useState(true);
+  const [loaded, setLoaded] = useState(false);
+  
+  
   return (
     <div className='bg-black h-full'>
       <div className='bg-[#f18912] w-full flex justify-between border-y-2 border-black items-center h-[58px]'>
@@ -18,20 +21,31 @@ const Analytics = () => {
         <div className=' w-[90%] px-6 pt-6 '>
             <h1 className='font-extrabold text-5xl text-white'>Device: 30082003</h1>
         </div>
-        <div className='w-[30%] ml-[70%] flex flex-row pt-4 '>
+        <div className='w-[30%] ml-[70%] flex flex-row pt-2 '>
         <button 
-        className='border-x-4 mx-4 mr-8 hover:border-[#111111] focus:bg-black focus:border-black rounded-lg py-1  px-4 text-3xl font-bold text-white '
+        
+        className='border-x-4 border-t-4 hover:border-[#111111] focus:bg-black focus:border-black rounded-md py-1  px-4 text-3xl font-bold text-white '
+        onClick={() => setPage(true)}
+        >
+          Raw Data
+        </button>
+        <button
+        
+        className='border-x-4 border-t-4  ml-[-1px] hover:border-[#111111] focus:bg-black focus:border-black rounded-md py-1 px-4 text-3xl font-bold text-white '
         onClick={() => setPage(false)}
         >
-          Overview
+          Alarms
         </button>
-        </div>
         
-
+        </div>
       </div>
     
       
-        
+        {page ? (
+            <GetSensors/>
+        ) : (           
+          <Alarms/> 
+        )}
     
            
      
@@ -42,4 +56,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default Data;

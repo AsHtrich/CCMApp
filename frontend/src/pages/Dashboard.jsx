@@ -40,6 +40,7 @@ const Dashboard = () => {
     <div className='flex flex-col w-full'>
       <div className='bg-[#f18912] w-full flex justify-between border-y-2 border-black items-center h-[58px]'>
           <h1 className='text-black px-[72px] font-bold text-3xl'>DASHBOARD</h1>
+          
           <div className='flex flex-row '>
             <h1 className='text-black font-semibold px-[64px] py-[32px] text-xl'>User@882003</h1>
             <Lilo></Lilo>
@@ -50,7 +51,7 @@ const Dashboard = () => {
           <div className='w-1/2'>
               <DashboardBalls/>
           </div>
-          <div className='h-[800px] border border-black p-[5px]  rounded w-1/2'>
+          <div className='h-[800px] border border-white p-[3px] shadow rounded-xl w-1/2'>
             <MapContainer
               key={mapKey} // Set the key to trigger a reload
               center={position}
