@@ -48,10 +48,160 @@ const Dashboard = () => {
       </div>
       <div>
         <div className='flex flex-row h-full'>
-          <div className='w-1/2'>
+          <div className='w-2/5'>
               <DashboardBalls/>
+              <div className='h-[700px] p-4 overflow-auto bg-black '>
+                  <div className='h-[265px] w-full rounded-xl  border-[#5A5A5A] border-4 bg-green-100'>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1 ml-4 overflow-x-auto font-semibold'>Belgaum</h1>
+                      <h1 className='text-black p-1  w-[40%] my-1 overflow-hidden font-semibold'>---------------------------------------</h1>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>Bangalore</h1>
+                    </div>
+                    <div className='p-2'>
+                      <div className=' h-full'>
+                        <div className='flex flex-row justify-between'>                 
+                            <h1 className='text-lg font-semibold'>TRIP ID: 1234</h1>
+                            <h1 className='text-lg font-semibold'>DRIVER ID: 666</h1>
+                            <h1 className='text-lg font-semibold'>DEVICE ID: 666</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[50px] bg-black'>
+                        <h1 className='text-lg font-semibold text-white'>30 °C</h1>
+                        <h1 className='text-lg font-semibold text-white'>Expected temperature: 2 ~ 4 °C</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[70px] '>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Humidity: 80%</h1>
+                           <h1 className='text-md font-light text-black'>Pressure: 1.0001 atm</h1>
+                          </div>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Shock: 5.6 G</h1>
+                           <h1 className='text-md font-light text-black'>Light: Lit</h1>
+                          </div>
+                        </div>
+     
+                      </div>
+                    </div>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                          <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>Asset: Penicilin</h1>
+                    </div>
+                  </div>
+
+                  
+
+
+
+                  <div className='h-[260px] mt-6 rounded-xl border-[#5A5A5A] border-4 bg-green-100'>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1 ml-4 overflow-x-auto font-semibold'>XXXXXXX</h1>
+                      <h1 className='text-black p-1  w-[40%] my-1 overflow-hidden font-semibold'>---------------------------------------</h1>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>XXXXXXXXX</h1>
+                    </div>
+                    <div className='p-2'>
+                      <div className=' h-full'>
+                        <div className='flex flex-row justify-between'>                 
+                            <h1 className='text-lg font-semibold'>TRIP ID: xxxx</h1>
+                            <h1 className='text-lg font-semibold'>DRIVER ID: xxx</h1>
+                            <h1 className='text-lg font-semibold'>DEVICE ID: xxx</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[50px] bg-black'>
+                        <h1 className='text-lg font-semibold text-white'>30 °C</h1>
+                        <h1 className='text-lg font-semibold text-white'>Expected temperature: 2 ~ 4 °C</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[70px] '>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Humidity: 80%</h1>
+                           <h1 className='text-md font-light text-black'>Pressure: 1.0001 atm</h1>
+                          </div>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Shock: 5.6 G</h1>
+                           <h1 className='text-md font-light text-black'>Light: Lit</h1>
+                          </div>
+                        </div>
+     
+                      </div>
+                    </div>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                          <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>Asset: XXXXXXXXX</h1>
+                    </div>
+                  </div>
+
+                  <div className='h-[260px] mt-6 rounded-xl border-[#5A5A5A] border-4 bg-green-100'>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1 ml-4 overflow-x-auto font-semibold'>XXXXXXX</h1>
+                      <h1 className='text-black p-1  w-[40%] my-1 overflow-hidden font-semibold'>---------------------------------------</h1>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>XXXXXXXXX</h1>
+                    </div>
+                    <div className='p-2'>
+                      <div className=' h-full'>
+                        <div className='flex flex-row justify-between'>                 
+                            <h1 className='text-lg font-semibold'>TRIP ID: xxxx</h1>
+                            <h1 className='text-lg font-semibold'>DRIVER ID: xxx</h1>
+                            <h1 className='text-lg font-semibold'>DEVICE ID: xxx</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[50px] bg-black'>
+                        <h1 className='text-lg font-semibold text-white'>30 °C</h1>
+                        <h1 className='text-lg font-semibold text-white'>Expected temperature: 2 ~ 4 °C</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[70px] '>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Humidity: 80%</h1>
+                           <h1 className='text-md font-light text-black'>Pressure: 1.0001 atm</h1>
+                          </div>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Shock: 5.6 G</h1>
+                           <h1 className='text-md font-light text-black'>Light: Lit</h1>
+                          </div>
+                        </div>
+     
+                      </div>
+                    </div>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                          <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>Asset: XXXXXXXXX</h1>
+                    </div>
+                  </div>
+
+                  <div className='h-[260px] mt-6 rounded-xl border-[#5A5A5A] border-4 bg-green-100'>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1 ml-4 overflow-x-auto font-semibold'>XXXXXXX</h1>
+                      <h1 className='text-black p-1  w-[40%] my-1 overflow-hidden font-semibold'>---------------------------------------</h1>
+                      <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>XXXXXXXXX</h1>
+                    </div>
+                    <div className='p-2'>
+                      <div className=' h-full'>
+                        <div className='flex flex-row justify-between'>                 
+                            <h1 className='text-lg font-semibold'>TRIP ID: xxxx</h1>
+                            <h1 className='text-lg font-semibold'>DRIVER ID: xxx</h1>
+                            <h1 className='text-lg font-semibold'>DEVICE ID: xxx</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[50px] bg-black'>
+                        <h1 className='text-lg font-semibold text-white'>30 °C</h1>
+                        <h1 className='text-lg font-semibold text-white'>Expected temperature: 2 ~ 4 °C</h1> 
+                        </div>
+                        <div className='flex flex-row justify-between p-2 rounded-lg h-[70px] '>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Humidity: 80%</h1>
+                           <h1 className='text-md font-light text-black'>Pressure: 1.0001 atm</h1>
+                          </div>
+                          <div>
+                           <h1 className='text-md font-light text-black'>Shock: 5.6 G</h1>
+                           <h1 className='text-md font-light text-black'>Light: Lit</h1>
+                          </div>
+                        </div>
+     
+                      </div>
+                    </div>
+                    <div className='w-full flex justify-between rounded-lg h-[40px] bg-[#EEEEEE]'>
+                          <h1 className='text-black p-1 flex justify-center w-[30%] my-1  mr-2 ml-2 truncate font-semibold'>Asset: XXXXXXXXX</h1>
+                    </div>
+                  </div>
+
+
+
+
+
+              </div>
           </div>
-          <div className='h-[800px] border border-white p-[3px] shadow rounded-xl w-1/2'>
+          <div className='h-[800px] border border-white p-[3px] shadow rounded-xl w-3/5'>
             <MapContainer
               key={mapKey} // Set the key to trigger a reload
               center={position}

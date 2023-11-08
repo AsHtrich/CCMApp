@@ -40,6 +40,10 @@ async def create_trips(trip: _schemas.Trips, user: _schemas.User = _fastapi.Depe
 async def get_trips(user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
     return await _services.get_trips(user=user, db=db)
 
+@app.get("/api/trips/total", response_model= int )
+async def get_total_trips(user: _schemas.User = _fastapi.Depends(_services.get_current_user), db: _orm.Session = _fastapi.Depends(_services.get_db),):
+    return await _services.get_total_trips(user=user, db=db)
+
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @app.post("/api/locs", response_model=_schemas.Locations)
@@ -88,6 +92,10 @@ async def create_alarms( device: _schemas.Devices,sens: _schemas.Sensors, alarm:
 @app.get("/api/alarms", response_model=List[_schemas.Alarms])
 async def get_alarms(db: _orm.Session = _fastapi.Depends(_services.get_db)):
     return await _services.get_all_items(db, _models.Alarms)
+
+@app.get("/api/alarms/total", response_model=int)
+async def get_total_alarms(db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    return await _services.get_total_alarms(db, _models.Alarms)
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 

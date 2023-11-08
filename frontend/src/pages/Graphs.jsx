@@ -16,13 +16,13 @@ const Graphs = () => {
             <Lilo></Lilo>
           </div>
       </div>
-      <div className='w-full flex flex-row items-center justify-center h-[90px] bg-[#5A5A5A]'>
+      <div className='w-full flex flex-row items-center justify-center h-[90px] bg-[#EEEEEE]'>
         <div className=' w-[80%]  px-10 pt-2 '>
-            <h1 className='font-extrabold text-5xl text-white'>Device: 30082003</h1>
+            <h1 className='font-extrabold text-5xl text-black'>Device: 30082003</h1>
         </div>
         <div className='w-[30%] ml-[40%] pt-12 pr-20 flex flex-row '>
         <button 
-        className='border-x-4 mx-4 mr-8 hover:border-[#111111] focus:bg-black focus:border-black rounded-lg py-1  px-4 text-3xl font-bold text-white '
+        className='border-x-4 mx-4 mr-8 bg-black border-black py-2 hover:border-[#111111] focus:bg-black focus:border-black rounded-lg  px-4 text-3xl font-bold text-white '
         onClick={() => setPage(false)}
         >
           Overview
@@ -31,7 +31,7 @@ const Graphs = () => {
       </div>
       <div className=' mx-10 h-[700px] overflow-auto'>
         <div className='flex flex-row items-center justify-between'>
-            <div className='bg-[#EEEEEE] h-[200px] w-1/4 mx-4 rounded-2xl  '>
+            <div className='bg-[#eeeeeec9] h-[200px] w-1/4 mx-4 rounded-2xl  '>
               <div className='border-b-2 border-black p-2 items-center justify-center flex'>
                 <h1 className='text-xl  font-bold'>Current Temperature</h1>
               </div>
@@ -45,7 +45,7 @@ const Graphs = () => {
         </div>
 
         <div className='flex flex-row items-center justify-between'>
-            <div className='bg-[#EEEEEE] h-[200px] w-1/4 mx-4 rounded-2xl  '>
+            <div className='bg-[#eeeeeec9] h-[200px] w-1/4 mx-4 rounded-2xl  '>
               <div className='border-b-2 border-black p-2 items-center justify-center flex'>
                 <h1 className='text-xl font-bold'>Current Humidity</h1>
               </div>
@@ -59,7 +59,7 @@ const Graphs = () => {
         </div>
 
         <div className='flex flex-row items-center justify-between'>
-            <div className='bg-[#EEEEEE] h-[200px] w-1/4 mx-4 rounded-2xl  '>
+            <div className='bg-[#eeeeeec9] h-[200px] w-1/4 mx-4 rounded-2xl  '>
               <div className='border-b-2 border-black p-2 items-center justify-center flex'>
                 <h1 className='text-xl font-bold'>Current Pressure</h1>
               </div>

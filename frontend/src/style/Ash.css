@@ -34,8 +34,9 @@ main{
 }
 .bars{
     display: flex;
-    font-size: 25px;
+    font-size: 30px;
     margin-left: 70px;
+    padding-left: 4px;
 }
 .link{
     display: flex;
@@ -55,5 +56,6 @@ main{
     color: #000;
 }
 .icon, .link_text{
-    font-size: 20px;
+    font-size: 25px;
+    padding-left: 2px;
 }

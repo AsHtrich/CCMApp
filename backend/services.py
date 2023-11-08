@@ -81,6 +81,10 @@ async def get_trips(user: _schemas.User, db: _orm.Session):
     allTrips = db.query(_models.Trips).filter_by(uid=user.uid)
     return list(map(_schemas.Trips.model_validate, allTrips))
 
+async def get_total_trips(user: _schemas.User, db: _orm.Session):
+    allTrips = db.query(_models.Trips).filter_by(uid=user.uid)
+    return len(list(map(_schemas.Trips.model_validate, allTrips)))
+
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 async def create_locs(ware: _schemas.Locations, db: _orm.Session):
@@ -170,6 +174,10 @@ async def create_alarms(alarm: _schemas.Alarms, sens: _schemas.Sensors, device:_
 async def get_all_items(db: _orm.Session, model: _models._database.Base):
     all_items = db.query(model).all()
     return list(all_items)
+
+async def get_total_alarms(db: _orm.Session, model: _models._database.Base):
+    all_items = db.query(model).all()
+    return len(list(all_items))
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 

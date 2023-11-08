@@ -31,6 +31,7 @@ const Alltrips = ({ active, handleModal, token, id, setErrorMessage }) => {
         setDEST(data.destination);
         setDestLOC(data.destination_location);
         setSrcLOC(data.source_location);
+        
       }
     };
 

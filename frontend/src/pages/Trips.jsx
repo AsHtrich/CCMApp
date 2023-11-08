@@ -59,7 +59,7 @@ const Trips = () => {
   return (
     <div className="bg-[#111111] h-full">
       <div className='bg-[#eb760f] w-full flex justify-between border-y-2 border-black items-center h-[58px]'>
-          <h1 className='text-black px-[72px] font-bold text-3xl'>DASHBOARD</h1>
+          <h1 className='text-black px-[72px] font-bold text-3xl'>ALL TRIPS</h1>
           <div className='flex flex-row '>
             <h1 className='text-black font-semibold px-[64px] py-[32px] text-xl'>User@882003</h1>
             <Lilo></Lilo>
